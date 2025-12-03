@@ -1,71 +1,359 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <link rel="stylesheet" href="static/style.css"> 
-  <meta charset="utf-8">
-  <title>Home · Evan Sheridan </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evan Sheridan</title>
+    <style>
+        /* MODERN ACADEMIC THEME */
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --accent-color: #111111;
+            --link-color: #0056b3;
+            --secondary-text: #666666;
+            --font-serif: 'Georgia', 'Times New Roman', serif;
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        /* RESET & BASE */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-serif);
+            line-height: 1.7; 
+            font-size: 18px;
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+        }
+
+        /* TYPOGRAPHY */
+        h1, h2, h3, .role, .nav-links, .pub-meta, .section-label, .honours, .exp-role, .exp-date, .exp-loc, .exp-prev {
+            font-family: var(--font-sans);
+        }
+
+        h1 { font-size: 2.2rem; font-weight: 700; color: var(--accent-color); margin-bottom: 0.2rem; }
+        h2 { font-size: 1.4rem; margin-top: 4rem; border-bottom: 2px solid #f4f4f4; padding-bottom: 0.5rem; margin-bottom: 2rem; }
+        
+        a { color: var(--link-color); text-decoration: none; transition: opacity 0.2s; }
+        a:hover { opacity: 0.7; }
+        
+        /* INLINE LINK STYLING */
+        p a {
+            font-weight: 600;
+            border-bottom: 1px solid rgba(0, 86, 179, 0.3);
+        }
+        p a:hover {
+            border-bottom: 1px solid rgba(0, 86, 179, 1);
+        }
+
+        /* HEADER */
+        header { margin-bottom: 4rem; }
+        .role { color: var(--secondary-text); font-size: 1.15rem; margin-bottom: 0.5rem; font-weight: 400; }
+        
+        /* HONOURS LINE */
+        .honours {
+            font-size: 0.9rem;
+            color: #444;
+            background-color: #f8f8f8;
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            margin-bottom: 1.2rem;
+            letter-spacing: 0.02em;
+        }
+
+        .nav-links { display: flex; gap: 1.5rem; font-size: 0.95rem; margin-top: 0.8rem; }
+        .nav-links a { color: var(--text-color); border-bottom: 1px solid transparent; }
+        .nav-links a:hover { border-bottom: 1px solid var(--text-color); }
+
+        /* BIO SECTION (Grid Layout) */
+        .bio-container {
+            display: grid;
+            grid-template-columns: 1fr 240px; 
+            gap: 4rem; 
+            align-items: start; 
+            margin-bottom: 4rem;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+            object-fit: cover;
+            aspect-ratio: 1 / 1;
+            background-color: #f0f0f0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08); 
+            object-position: center 20%; 
+        }
+
+        /* QUOTE STYLE - UPDATED */
+        .quote {
+            font-style: italic;
+            color: var(--secondary-text);
+            font-size: 1.05rem; /* Slightly larger */
+            margin-bottom: 2rem;
+            display: block;
+            line-height: 1.6;
+            
+            /* The visual anchor: */
+            border-left: 4px solid #eee;
+            padding-left: 1.2rem;
+        }
+
+        /* CAPABILITIES BLOCKS */
+        .capability-block {
+            margin-bottom: 2rem; 
+            border-left: 3px solid #f4f4f4;
+            padding-left: 1.2rem;
+        }
+        
+        .section-label {
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            color: #444;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 0.4rem;
+        }
+        
+        p { margin-bottom: 1.5rem; }
+
+        /* EXPERIENCE SECTION */
+        .experience-item {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            margin-bottom: 2.5rem; 
+            align-items: baseline;
+        }
+        
+        .exp-date {
+            font-size: 0.9rem;
+            color: var(--secondary-text);
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .exp-role {
+            font-weight: 600;
+            color: #111;
+            font-size: 1.1rem;
+        }
+        
+        .exp-loc {
+            font-weight: 400;
+            color: var(--secondary-text);
+            margin-top: 0.1rem;
+        }
+
+        .exp-prev {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0.4rem;
+            font-style: italic;
+        }
+
+        /* LISTS */
+        ul { list-style: none; }
+        li { margin-bottom: 1.5rem; }
+        
+        /* PUB & PATENT STYLING */
+        .pub-title { font-weight: bold; display: block; color: #111; margin-bottom: 0.2rem; }
+        .pub-meta { font-size: 0.95rem; color: var(--secondary-text); display: block; line-height: 1.5; }
+
+        /* FOOTER */
+        footer {
+            margin-top: 6rem;
+            padding-top: 2rem;
+            border-top: 1px solid #f4f4f4;
+            font-size: 0.85rem;
+            color: var(--secondary-text);
+            font-family: var(--font-sans);
+            text-align: center;
+        }
+
+        /* MOBILE RESPONSIVENESS */
+        @media (max-width: 750px) {
+            .bio-container {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+            .profile-img {
+                width: 180px;
+                margin: 0 auto;
+                display: block;
+                order: -1;
+            }
+            .experience-item {
+                grid-template-columns: 1fr;
+                gap: 0.3rem;
+            }
+            body { padding: 3rem 1.5rem; }
+        }
+    </style>
 </head>
 <body>
-<div id="menu">
-<span class="title">Evan Sheridan</span>
-<ul>
-  <li><a href="about/index.html">About</a></li>
-  <li><a href="blog/index.html">Blog</a></li>
-  <li><a href="teaching/index.html">Teaching</a></li>
-  <li><a href="publications/index.html">Publications</a></li></li>
-</ul>
-</div>
-<div id="left">&nbsp;</div>
-<div id="content">
-<div id="content">
-<img src="./static/portrait.jpeg" height="200">
 
-<p>
-Senior Scientist @ <a href="https://www.Phasecraft.io"> Phasecraft </a>. 
-</p>
+    <header>
+        <h1>Evan Sheridan</h1>
+        <div class="role">Senior Computational Materials Scientist</div>
+        
+        <div class="honours">
+            Fulbright Scholar • PhD, King's College London
+        </div>
 
-<p>
-Hi there! You are about to begin reading my webpage. <i> Relax. Concentrate. Dispel
-every other thought. Let the world around you fade. Best to close the door; the TV is always on in the next room. </i> <sup><a href="#footnote1" id="reference1">1</a></sup></p>
+        <nav class="nav-links">
+            <a href="https://www.linkedin.com/in/evansheridan/" target="_blank">LinkedIn</a>
+            <a href="https://scholar.google.com/citations?hl=en&user=Cd9yrlIAAAAJ" target="_blank">Google Scholar</a>
+        </nav>
+    </header>
 
-<p>
-My research focuses on designing and implementing algorithms to simulate physics
-and chemistry for meaningful, real-world applications. These efforts are unified
-by a drive to push the boundaries of state-of-the-art methods for modeling
-many-body quantum processes in molecules and materials.
-</p>
+    <div class="bio-container">
+        
+        <div class="bio-text">
+            <span class="quote">
+                "Relax. Concentrate. Dispel every other thought. Let the world around you fade. Best to close the door; the TV is always on in the next room." 
+                <br>— Italo Calvino
+            </span>
+            
+            <p>
+                Hi there. I am a computational materials scientist specialising in <strong>quantum and classical simulation for materials discovery</strong>. 
+            </p>
+            
+            <p>
+                I combine <strong>first-principles (many-body) methods</strong> with <strong>machine-learning-augmented modelling</strong> to design high-throughput simulation workflows. I have defined the scientific strategy and <strong>co-led the technical execution</strong> of large-scale international research collaborations, working closely with experimental and engineering teams to translate research into applied outcomes — including the <a href="https://materials.phasecraft.io/" target="_blank">Materials Modeling Quantum Complexity Database</a>.
+            </p>
+            
+            <div class="capability-block">
+                <span class="section-label">Materials Physics</span>
+                <p>
+                  My core expertise lies in ab-initio methods to predict the electronic (DFT++, DMFT) and structural properties of complex materials systems critical for future energy technologies, including transition-metal oxides, alloys, spin defects, and elemental metals.
+                </p>
+            </div>
 
-<p>
-In chemistry, I’ve recently focused on covalent inhibition mechanisms in the
-context of drug discovery for myotonic dystrophy. On the physics side, I
-continue to explore techniques to understand the effects of strong electronic
-correlations in transition metal oxides, with potential applications in future
-quantum and energy technologies.
-</p>
-  
-<p>
-I'm a passionate hill walker, staunch advocate of the slow food movement, and
-always keen to learn something new.
-</p>
+            <div class="capability-block">
+                <span class="section-label">Machine Learning & Algorithm Development</span>
+                <p>
+I utilise state-of-the-art HPC and workflow management systems to explore these materials. When standard approximations (like DFT) fail, I develop novel, <a href="#patents">proprietary quantum-enhanced functionals</a> and Monte Carlo solvers. I also design <strong>physics-informed machine learning</strong> methods as a companion to these simulations that compress and exploit inherent physical properties and symmetries to remove systematic algorithmic errors.
+                </p>
+            </div>
 
-<h3>Elsewhere</h3>
+            <p>
+            I'm a passionate hill walker, staunch advocate of the slow food movement, and always keen to learn something new.
+            </p>
+            
+        </div>
 
-<p class="notop"><a href="https://github.com/evan1415">evan1415</a> on GitHub; <a href="https://twitter.com/evan1415">evan1415</a> on Twitter; <a href="https://scholar.google.co.uk/citations?user=Cd9yrlIAAAAJ&hl=en">Google Scholar</a>;  <a href="https://www.linkedin.com/in/evansheridan/">LinkedIn</a> </p>
+        <img src="profile.jpg" alt="Evan Sheridan" class="profile-img">
+    </div>
 
-<p id="footnote1"><sup>1</sup> &copy; Quote from * <a href="https://www.sccs.swarthmore.edu/users/00/pwillen1/lit/winter.htm">If on a winter's night a traveler</a>* by Italo Calvino. <a href="#reference1">↩</a></p>
-</p>
+    <section id="experience">
+        <h2>Experience</h2>
+        
+        <div class="experience-item">
+            <div class="exp-date">2023 — Present</div>
+            <div>
+                <div class="exp-role">Senior Scientist</div>
+                <div class="exp-loc">Phasecraft, London</div>
+                <div class="exp-prev">Promoted from Quantum Software Researcher (joined 2021)</div>
+            </div>
+        </div>
 
-</div>
-</div>
+        <div class="experience-item">
+            <div class="exp-date">2019 — 2021</div>
+            <div>
+                <div class="exp-role">Fulbright Scholar</div>
+                <div class="exp-loc">UC Berkeley & Lawrence Berkeley National Lab (LBNL)</div>
+            </div>
+        </div>
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-123795430-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+        <div class="experience-item">
+            <div class="exp-date">2019</div>
+            <div>
+                <div class="exp-role">Research Scientist</div>
+                <div class="exp-loc">Happy Electron, London</div>
+            </div>
+        </div>
+    </section>
 
-  gtag('config', 'UA-123795430-1');
-</script>
+    <section id="patents">
+        <h2>Patents</h2>
+        <ul>
+            <li>
+                <span class="pub-title">Condensed Matter Simulations on Quantum Computers</span>
+                <span class="pub-meta">Application US20230385681A1 (2023)</span>
+            </li>
+                <span class="pub-title">VQE for Improved DFT Simulations</span>
+                <span class="pub-meta">Application US20240412823A1 (2024)</span>
+            </li>
+        </ul>
+    </section>
+
+    <section id="publications">
+        <h2>Selected Publications</h2>
+        
+        <ul>
+            <li>
+                <span class="pub-title">Towards near-term quantum simulation of materials</span>
+                <span class="pub-meta">
+                    E. Sheridan, et al. • <em>Nature Communications</em> (2024) • 
+                    <a href="https://doi.org/10.1038/s41467-023-43479-6" target="_blank">DOI</a>
+                </span>
+            </li>
+            
+             <li>
+                <span class="pub-title">Enhancing density functional theory using the variational quantum eigensolver</span>
+                <span class="pub-meta">
+                    E. Sheridan, et al. • <em>arXiv</em> (2024) • 
+                    <a href="https://arxiv.org/abs/2402.18534" target="_blank">arXiv:2402.18534</a>
+                </span>
+            </li>
+
+            <li>
+                <span class="pub-title">Data-driven dynamical mean-field theory: An error-correction approach to solve the quantum many-body problem</span>
+                <span class="pub-meta">
+                     E. Sheridan, et al. • <em>Physical Review B</em> (2021) • 
+                    <a href="https://doi.org/10.1103/PhysRevB.104.205120" target="_blank">DOI</a>
+                </span>
+            </li>
+
+            <li>
+                <span class="pub-title">Coherent electric field manipulation of Fe<sup>3+</sup> spins in PbTiO<sub>3</sub></span>
+                <span class="pub-meta">
+                    J. Liu, E. Sheridan, et al. • <em>Science Advances</em> (2021) • 
+                    <a href="https://doi.org/10.1126/sciadv.abf8103" target="_blank">DOI</a>
+                </span>
+            </li>
+            
+            <li>
+                <span class="pub-title">From Slater to Mott physics by epitaxially engineering electronic correlations in oxide interfaces</span>
+                <span class="pub-meta">
+                     C. Lupo, E. Sheridan, et al. • <em>npj Computational Materials</em> (2021) • 
+                    <a href="https://doi.org/10.1038/s41524-021-00563-z" target="_blank">DOI</a>
+                </span>
+            </li>
+            
+             <li>
+                <span class="pub-title">Elucidating the local atomic and electronic structure of amorphous oxidized superconducting niobium films</span>
+                <span class="pub-meta">
+                     T. F. Harrelson, E. Sheridan, et al. • <em>Applied Physics Letters</em> (2021) • 
+                    <a href="https://doi.org/10.1063/5.0069549" target="_blank">DOI</a>
+                </span>
+            </li>
+
+        </ul>
+        
+        <p style="font-size: 0.9rem; margin-top: 2rem; color: #666;">
+            View full list on <a href="https://scholar.google.com/citations?hl=en&user=Cd9yrlIAAAAJ">Google Scholar &rarr;</a>
+        </p>
+    </section>
+
+    <footer>
+        &copy; <script>document.write(new Date().getFullYear())</script> Evan Sheridan.
+    </footer>
 
 </body>
 </html>
-
