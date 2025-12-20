@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-W1VSSLCZC4"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-W1VSSLCZC4"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
-  gtag('config', 'G-W1VSSLCZC4');
-</script>
+      gtag('config', 'G-W1VSSLCZC4');
+    </script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,6 +23,12 @@
             --secondary-text: #666666;
             --font-serif: 'Georgia', 'Times New Roman', serif;
             --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            
+            /* GALLERY SETTINGS */
+            --img-height: 200px;  /* Height for top grid */
+            --img-height-wide: 280px; /* Height for bottom grid (makes them look better) */
+            --zoom-level: 2.2;    
+            --gap-buffer: 15px;   
         }
 
         /* RESET & BASE */
@@ -41,7 +46,7 @@
         }
 
         /* TYPOGRAPHY */
-        h1, h2, h3, .role, .nav-links, .pub-meta, .section-label, .honours, .exp-role, .exp-date, .exp-loc, .exp-prev {
+        h1, h2, h3, .role, .nav-links, .pub-meta, .section-label, .honours, .exp-role, .exp-date, .exp-loc, .exp-prev, .gallery-caption {
             font-family: var(--font-sans);
         }
 
@@ -80,7 +85,7 @@
         .nav-links a { color: var(--text-color); border-bottom: 1px solid transparent; }
         .nav-links a:hover { border-bottom: 1px solid var(--text-color); }
 
-        /* BIO SECTION (Grid Layout) */
+        /* BIO SECTION */
         .bio-container {
             display: grid;
             grid-template-columns: 1fr 240px; 
@@ -100,21 +105,17 @@
             object-position: center 20%; 
         }
 
-        /* QUOTE STYLE - UPDATED */
         .quote {
             font-style: italic;
             color: var(--secondary-text);
-            font-size: 1.05rem; /* Slightly larger */
+            font-size: 1.05rem; 
             margin-bottom: 2rem;
             display: block;
             line-height: 1.6;
-            
-            /* The visual anchor: */
             border-left: 4px solid #eee;
             padding-left: 1.2rem;
         }
 
-        /* CAPABILITIES BLOCKS */
         .capability-block {
             margin-bottom: 2rem; 
             border-left: 3px solid #f4f4f4;
@@ -133,6 +134,123 @@
         
         p { margin-bottom: 1.5rem; }
 
+        /* --- GALLERY BASE STYLES --- */
+        .gallery-item {
+            display: flex;
+            flex-direction: column;
+            position: relative; 
+            transition: all 0.3s ease;
+        }
+
+        /* INVISIBLE BRIDGE (Fixes clicking) */
+        .gallery-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none; 
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: var(--img-height); 
+            object-fit: contain;
+            object-position: center;
+            background-color: #ffffff; 
+            border: 1px solid #eaeaea; 
+            border-radius: 4px;
+            padding: 10px;
+            position: relative;
+            z-index: 10;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transform-origin: center center; 
+        }
+
+        .gallery-caption {
+            font-size: 1rem;
+            color: #222;
+            margin-top: 0.5rem;
+            line-height: 1.5;
+            transition: transform 0.3s ease;
+            position: relative;
+            z-index: 11;
+            background-color: var(--bg-color); 
+            padding: 5px; 
+            border-radius: 4px;
+        }
+        
+        .gallery-caption a {
+            color: var(--link-color);
+            font-weight: 600;
+            text-decoration: underline;
+            position: relative;
+            z-index: 12;
+        }
+
+        /* --- HOVER EFFECTS --- */
+        .gallery-item:hover { z-index: 1000; }
+        .gallery-item:hover::after { display: block; height: 150%; z-index: -1; }
+        
+        .gallery-item:hover img {
+            transform: scale(var(--zoom-level)); 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            border-color: #fff;
+        }
+
+        /* --- GRID 1: TOP SECTION (3 Columns) --- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem; /* Small gap to connect to bottom grid */
+        }
+
+        /* Slide logic for Top Grid */
+        .gallery-grid .gallery-item:hover .gallery-caption {
+            transform: translateY(calc( (var(--img-height) * (var(--zoom-level) - 1) / 2) + var(--gap-buffer) ));
+        }
+
+        /* --- GRID 2: BOTTOM SECTION (2 Columns) --- */
+        .gallery-grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Forces 2 columns */
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        /* Taller images for bottom grid */
+        .gallery-grid-2 .gallery-item img {
+            height: var(--img-height-wide); 
+        }
+
+        /* Slide logic for Bottom Grid */
+        .gallery-grid-2 .gallery-item:hover .gallery-caption {
+            transform: translateY(calc( (var(--img-height-wide) * (var(--zoom-level) - 1) / 2) + var(--gap-buffer) ));
+        }
+
+        /* --- MOBILE RESPONSIVENESS --- */
+        @media (max-width: 750px) {
+            .bio-container { grid-template-columns: 1fr; gap: 2.5rem; }
+            .profile-img { width: 180px; margin: 0 auto; display: block; order: -1; }
+            .experience-item { grid-template-columns: 1fr; gap: 0.3rem; }
+            
+            /* Collapse BOTH grids to 1 column */
+            .gallery-grid, .gallery-grid-2 { grid-template-columns: 1fr; gap: 1.5rem; }
+            
+            /* Reset heights for mobile */
+            .gallery-grid .gallery-item img, 
+            .gallery-grid-2 .gallery-item img { height: auto; aspect-ratio: 16/9; }
+            
+            /* Disable hover on mobile */
+            .gallery-item:hover img { transform: none; }
+            .gallery-item:hover .gallery-caption { transform: none; }
+            .gallery-item:hover::after { display: none; }
+            
+            body { padding: 3rem 1.5rem; }
+        }
+
         /* EXPERIENCE SECTION */
         .experience-item {
             display: grid;
@@ -140,37 +258,39 @@
             margin-bottom: 2.5rem; 
             align-items: baseline;
         }
-        
-        .exp-date {
-            font-size: 0.9rem;
-            color: var(--secondary-text);
-            font-variant-numeric: tabular-nums;
-        }
-        
-        .exp-role {
-            font-weight: 600;
-            color: #111;
-            font-size: 1.1rem;
-        }
-        
-        .exp-loc {
-            font-weight: 400;
-            color: var(--secondary-text);
-            margin-top: 0.1rem;
-        }
 
-        .exp-prev {
-            font-size: 0.85rem;
-            color: #666;
-            margin-top: 0.4rem;
-            font-style: italic;
-        }
+/* --- NEW LOGO STYLES --- */
+.exp-content-wrapper {
+    display: flex;
+    gap: 15px;            /* Space between logo and text */
+    align-items: flex-start; /* Aligns logo to the top of the text */
+}
 
+.exp-logo {
+    width: 48px;          /* Adjust size as needed */
+    height: 48px;
+    object-fit: contain;  /* Ensures logo doesn't stretch */
+    border-radius: 4px;   /* Slight rounding matches your gallery */
+    background-color: white; 
+    flex-shrink: 0;       /* Prevents logo from getting squashed */
+    border: 1px solid #f0f0f0; /* Optional: subtle border for white logos */
+}
+
+/* Mobile tweak: Ensure logo stays visible but layout adjusts if needed */
+@media (max-width: 750px) {
+    .exp-content-wrapper {
+        align-items: center; /* Center align on mobile if preferred */
+    }
+}
+
+        .exp-date { font-size: 0.9rem; color: var(--secondary-text); font-variant-numeric: tabular-nums; }
+        .exp-role { font-weight: 600; color: #111; font-size: 1.1rem; }
+        .exp-loc { font-weight: 400; color: var(--secondary-text); margin-top: 0.1rem; }
+        .exp-prev { font-size: 0.85rem; color: #666; margin-top: 0.4rem; font-style: italic; }
+        
         /* LISTS */
         ul { list-style: none; }
         li { margin-bottom: 1.5rem; }
-        
-        /* PUB & PATENT STYLING */
         .pub-title { font-weight: bold; display: block; color: #111; margin-bottom: 0.2rem; }
         .pub-meta { font-size: 0.95rem; color: var(--secondary-text); display: block; line-height: 1.5; }
 
@@ -185,31 +305,47 @@
             text-align: center;
         }
 
-        /* MOBILE RESPONSIVENESS */
-        @media (max-width: 750px) {
-            .bio-container {
-                grid-template-columns: 1fr;
-                gap: 2.5rem;
-            }
-            .profile-img {
-                width: 180px;
-                margin: 0 auto;
-                display: block;
-                order: -1;
-            }
-            .experience-item {
-                grid-template-columns: 1fr;
-                gap: 0.3rem;
-            }
-            body { padding: 3rem 1.5rem; }
-        }
+
+
+
+/* PUBLICATIONS WITH LOGOS */
+.pub-item {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start; /* Aligns logo with the title */
+    margin-bottom: 2rem;
+}
+
+.journal-logo {
+    height: 24px;       /* Fixed height ensures consistency */
+    width: auto;        /* Width adjusts automatically */
+    min-width: 24px;    /* Prevents tiny logos from disappearing */
+    filter: grayscale(100%); /* Makes logos black & white */
+    opacity: 0.6;       /* Subtlety is key */
+    transition: all 0.3s ease;
+    margin-top: 4px;    /* Visual tweak to align with text baseline */
+}
+
+/* Optional: Bring back color on hover */
+.pub-item:hover .journal-logo {
+    filter: grayscale(0%);
+    opacity: 1;
+}
+
+/* Mobile tweak */
+@media (max-width: 600px) {
+    .journal-logo { display: none; } /* Hide logos on small screens to save space */
+}
+
+
+        
     </style>
 </head>
 <body>
 
     <header>
         <h1>Evan Sheridan</h1>
-        <div class="role">Senior Computational Materials Scientist</div>
+        <div class="role">Senior Research Scientist</div>
         
         <div class="honours">
             Fulbright Scholar • PhD, King's College London
@@ -230,24 +366,28 @@
             </span>
             
             <p>
-                Hi there. I am a computational materials scientist specialising in <strong>quantum and classical simulation for materials discovery</strong>. 
+              Hi there. I am a research scientist specialising in AI-driven simulation methods for materials discovery.
             </p>
             
             <p>
-                I combine <strong>first-principles (many-body) methods</strong> with <strong>machine-learning-augmented modelling</strong> to design high-throughput simulation workflows. I have defined the scientific strategy and <strong>co-led the technical execution</strong> of large-scale international research collaborations, working closely with experimental and engineering teams to translate research into applied outcomes — including the <a href="https://materials.phasecraft.io/" target="_blank">Materials Modeling Quantum Complexity Database</a>.
+              I combine first-principles techniques with machine learning to design high-throughput simulation workflows for materials at scale. I have defined the scientific strategy and co-led the technical execution of large-scale international researchs collaborations, working closely with experimental and engineering teams to translate research into applied outcomes. I've spent over five years at startups focused on materials science, sitting at the intersection where cutting edge AI research meets engineering.
+              
+              <!-- I combine <strong>first-principles techniques</strong> with <strong>machine-learning-augmented modelling</strong> to design high-throughput simulation workflows for materials simulation. I have defined the scientific strategy and <strong>co-led the technical execution</strong> of large-scale international research collaborations, working closely with experimental and engineering teams to translate research into applied outcomes — including the <a href="https://materials.phasecraft.io/" target="_blank">Materials Modeling Quantum Complexity Database</a>. I thrive in high-paced, collaborative environments at the cutting edge of materials science innovations.  -->
             </p>
             
             <div class="capability-block">
                 <span class="section-label">Materials Physics</span>
                 <p>
-                  My core expertise lies in ab-initio methods to predict the electronic (DFT++, DMFT) and structural properties of complex materials systems critical for future energy technologies, including transition-metal oxides, alloys, spin defects, and elemental metals.
+                  My core expertise lies in ab-initio methods to predict the electronic (DFT, DMFT), structure (MLIPs, structure searching, generative design, phonons), and transport properties of complex materials systems critical for future energy technologies, including semiconductors, transition-metal oxides, battery materials, and spin defects.
+                  
                 </p>
             </div>
 
             <div class="capability-block">
                 <span class="section-label">Machine Learning & Algorithm Development</span>
                 <p>
-I utilise state-of-the-art HPC and workflow management systems to explore these materials. When standard approximations (like DFT) fail, I develop novel, <a href="#patents">proprietary quantum-enhanced functionals</a> and Monte Carlo solvers. I also design <strong>physics-informed machine learning</strong> methods as a companion to these simulations that compress and exploit inherent physical properties and symmetries to remove systematic algorithmic errors.
+                  I develop AI methods to accelerate and enhance materials simulation. A central tenet is physics-informed machine learning — I've designed enhanced exchange-correlation functionals and created the first DMFT impurity solver using delta-learning. I integrate these with workflow automation (AiiDA), high-throughput screening (pymatgen), and machine-learning interatomic potentials to enable materials discovery and exploration at scale.
+        
                 </p>
             </div>
 
@@ -260,34 +400,137 @@ I utilise state-of-the-art HPC and workflow management systems to explore these 
         <img src="profile.jpg" alt="Evan Sheridan" class="profile-img">
     </div>
 
-    <section id="experience">
-        <h2>Experience</h2>
+    <section id="research-highlights">
+        <h2>Research Highlights</h2>
         
-        <div class="experience-item">
-            <div class="exp-date">2023 — Present</div>
-            <div>
-                <div class="exp-role">Senior Scientist</div>
+        <div class="gallery-grid">
+            
+            <div class="gallery-item">
+                <img src="SC.png" alt="Quantum Workflow Diagram">
+                <div class="gallery-caption">
+                     <strong> Electronic Structure: </strong> Microscopic origin of Magnetic Disorder for superconducting qubits. 
+                     <a href="https://arxiv.org/abs/2111.11684" target="_blank">[Paper]</a>
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <img src="d3mft.png" alt="D3MFT">
+                <div class="gallery-caption">
+                    <strong>Software Infrastructure: </strong> Machine learning python library (d3mft) for many-body simulation. 
+                    <a href="https://journals.aps.org/prb/abstract/10.1103/PhysRevB.104.205120" target="_blank">[Paper]</a>
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <img src="srvo3.png" alt="SrVO3">
+                <div class="gallery-caption">
+                    <strong>Electronic structure: </strong> Hamiltonian representations using Wannierisation.
+                    <a href="https://www.nature.com/articles/s41467-023-43479-6" target="_blank">[Paper]</a>, <a href="https://materials.phasecraft.io" target="_blank">[Database]</a> 
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <img src="DOS.png" alt="DOS Plot">
+                <div class="gallery-caption">
+                <strong>Algorithm development: </strong> Quantum Monte Carlo methods for electronic spectral functions.
+                <a href="https://journals.aps.org/prb/abstract/10.1103/PhysRevB.99.205156" target="_blank">[Paper]</a>
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <img src="sairss.png" alt="SAIRSS">
+                <div class="gallery-caption">
+                <strong>Structure searching: </strong> Spin-assisted random structure searching to identify metastable states. 
+                <a href="https://www.nature.com/articles/s41524-021-00563-z" target="_blank">[Paper]</a>
+                </div>
+            </div>
+
+            
+            <div class="gallery-item">
+                <img src="https://img.youtube.com/vi/Fhr2MNzsLTM/maxresdefault.jpg" alt="Q2B Paris Talk">
+                <div class="gallery-caption">
+                    <strong>Invited Talk: </strong> Quantum Enhanced Materials Modeling.
+                    <a href="https://www.youtube.com/watch?v=Fhr2MNzsLTM" target="_blank">[Video]</a>
+                </div>
+            </div>
+
+            
+        </div> <div class="gallery-grid-2">
+
+            <div class="gallery-item">
+                <img src="oxides.png" alt="Complex Oxide Structure">
+                <div class="gallery-caption">
+                    <strong>Material design: </strong> Interface engineering of complex oxides for energy applications. 
+                    <a href="https://www.nature.com/articles/s41524-021-00563-z" target="_blank">[Paper]</a>
+                </div>
+            </div>
+
+          
+            <div class="gallery-item">
+                <img src="delta_learning.png" alt="ML">
+                <div class="gallery-caption">
+                  <strong>Machine learning: </strong> Delta-learning for many body materials simulations.
+                  <a href="https://jouxrnals.aps.org/prb/abstract/10.1103/PhysRevB.104.205120" target="_blank">[Paper]</a>
+                </div>
+            </div>
+
+        </div> </section>
+
+<section id="experience">
+    <h2>Experience</h2>
+    
+    <div class="experience-item">
+        <div class="exp-date">2021 — Present</div>
+        
+        <div class="exp-content-wrapper">
+            <img src="phasecraft.png" alt="Phasecraft" class="exp-logo">
+            
+            <div class="exp-text">
+                <div class="exp-role">Senior Scientist II</div>
                 <div class="exp-loc">Phasecraft, London</div>
-                <div class="exp-prev">Promoted from Quantum Software Researcher (joined 2021)</div>
+                
+                <div class="exp-prev" style="margin-top: 0.6rem; line-height: 1.6;">
+                    Previously: <strong>Senior Scientist I</strong> (2023 — 2025)<br>
+                    Promoted from: <strong>Quantum Software Researcher</strong> (2021 — 2023)
+                </div>
             </div>
         </div>
+        </div>
 
-        <div class="experience-item">
-            <div class="exp-date">2019 — 2021</div>
-            <div>
+    <div class="experience-item">
+        <div class="exp-date">2019 — 2021</div>
+        <div class="exp-content-wrapper">
+            <img src="ucb_lbnl.png" alt="Fulbright" class="exp-logo">
+            <div class="exp-text">
                 <div class="exp-role">Fulbright Scholar</div>
                 <div class="exp-loc">UC Berkeley & Lawrence Berkeley National Lab (LBNL)</div>
             </div>
         </div>
+    </div>
 
-        <div class="experience-item">
-            <div class="exp-date">2019</div>
-            <div>
+    <div class="experience-item">
+        <div class="exp-date">2019</div>
+        <div class="exp-content-wrapper">
+            <img src="he.png" alt="Happy Electron" class="exp-logo">
+            <div class="exp-text">
                 <div class="exp-role">Research Scientist</div>
                 <div class="exp-loc">Happy Electron, London</div>
             </div>
         </div>
-    </section>
+    </div>
+
+    <div class="experience-item">
+        <div class="exp-date">2016-2021</div>
+        <div class="exp-content-wrapper">
+            <img src="kcl.png" alt="King's College London" class="exp-logo">
+            <div class="exp-text">
+                <div class="exp-role">PhD Researcher</div>
+                <div class="exp-loc">Physics Department, King's College London</div>
+            </div>
+        </div>
+    </div>
+    
+</section>
 
     <section id="patents">
         <h2>Patents</h2>
@@ -296,6 +539,7 @@ I utilise state-of-the-art HPC and workflow management systems to explore these 
                 <span class="pub-title">Condensed Matter Simulations on Quantum Computers</span>
                 <span class="pub-meta">Application US20230385681A1 (2023)</span>
             </li>
+            <li>
                 <span class="pub-title">VQE for Improved DFT Simulations</span>
                 <span class="pub-meta">Application US20240412823A1 (2024)</span>
             </li>
@@ -325,7 +569,7 @@ I utilise state-of-the-art HPC and workflow management systems to explore these 
             <li>
                 <span class="pub-title">Data-driven dynamical mean-field theory: An error-correction approach to solve the quantum many-body problem</span>
                 <span class="pub-meta">
-                     E. Sheridan, et al. • <em>Physical Review B</em> (2021) • 
+                      E. Sheridan, et al. • <em>Physical Review B</em> (2021) • 
                     <a href="https://doi.org/10.1103/PhysRevB.104.205120" target="_blank">DOI</a>
                 </span>
             </li>
@@ -341,7 +585,7 @@ I utilise state-of-the-art HPC and workflow management systems to explore these 
             <li>
                 <span class="pub-title">From Slater to Mott physics by epitaxially engineering electronic correlations in oxide interfaces</span>
                 <span class="pub-meta">
-                     C. Lupo, E. Sheridan, et al. • <em>npj Computational Materials</em> (2021) • 
+                      C. Lupo, E. Sheridan, et al. • <em>npj Computational Materials</em> (2021) • 
                     <a href="https://doi.org/10.1038/s41524-021-00563-z" target="_blank">DOI</a>
                 </span>
             </li>
@@ -349,7 +593,7 @@ I utilise state-of-the-art HPC and workflow management systems to explore these 
              <li>
                 <span class="pub-title">Elucidating the local atomic and electronic structure of amorphous oxidized superconducting niobium films</span>
                 <span class="pub-meta">
-                     T. F. Harrelson, E. Sheridan, et al. • <em>Applied Physics Letters</em> (2021) • 
+                      T. F. Harrelson, E. Sheridan, et al. • <em>Applied Physics Letters</em> (2021) • 
                     <a href="https://doi.org/10.1063/5.0069549" target="_blank">DOI</a>
                 </span>
             </li>
